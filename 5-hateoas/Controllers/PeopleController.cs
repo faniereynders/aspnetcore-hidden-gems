@@ -8,6 +8,7 @@ namespace BasicExample.Controllers
     [Route("api/[controller]")]
     public class PeopleController : Controller
     {
+        #region ctor
         private readonly IEnumerable<PersonDto> people;
         public PeopleController()
         {
@@ -17,6 +18,7 @@ namespace BasicExample.Controllers
                 new PersonDto { Id = 3, Name = "Marcel", Email = "marcel@example.com" }
             };
         }
+        #endregion
 
         private PersonDto GetPerson(int id)
         {
