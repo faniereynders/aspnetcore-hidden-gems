@@ -1,7 +1,7 @@
 {
 	"folders": [
 		{
-			"path": "."
+			"path": "4-application-parts"
 		}
 	],
 	"settings": {
@@ -9,4 +9,5 @@
 		"terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
 		"workbench.colorTheme": "Default Light+"
 	}
+
 }

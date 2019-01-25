@@ -1,0 +1,16 @@
+{
+    "highlight.regexes": {
+        "(// ?TODO:?)[\r\n]+((\r|\n|\r\n)[^\r\n]+)(.*)": [
+            {
+              "overviewRulerColor": "#ffcc00",
+              "backgroundColor": "#ffcc00",
+              "color": "#1f1f1f",
+              "fontWeight": "bold"
+            },
+            {
+              "backgroundColor": "#d9ad00",
+              "color": "#1f1f1f"
+            }
+          ]
+    }
+}

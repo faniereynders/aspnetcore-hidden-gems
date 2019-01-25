@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -11,9 +12,14 @@ namespace AwesomeApi
     public class AwesomeModelBinder : IModelBinder
     {
         #region consts
-        private const string SUBSCRIPTION_KEY = "YOUR KEY HERE";
         private const string SUBSCRIPTION_LOCATION = "westeurope";
         #endregion
+        private readonly IConfiguration config;
+
+        public AwesomeModelBinder(IConfiguration config)
+        {
+            this.config = config;
+        }
 
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -23,7 +29,7 @@ namespace AwesomeApi
             if (!string.IsNullOrEmpty(base64Value))
             {
                 var bytes = Convert.FromBase64String(base64Value);
-                var emotionResult = await GetEmotionResultAsync(bytes);
+                var emotionResult = await GetEmotionResultAsync(bytes, config["SubscriptionKey"]);
                 var scores = emotionResult.Select(i => i.FaceAttributes.Emotion).ToArray();
                 var result = new EmotionalPhotoDto
                 {
@@ -34,11 +40,10 @@ namespace AwesomeApi
             }
             await Task.FromResult(Task.CompletedTask);
         }
-
-        private static async Task<EmotionResultDto[]> GetEmotionResultAsync(byte[] byteArray)
+        private static async Task<EmotionResultDto[]> GetEmotionResultAsync(byte[] byteArray, string key)
         {
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", SUBSCRIPTION_KEY);
+            client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
             var uri = $"https://{SUBSCRIPTION_LOCATION}.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceAttributes=emotion";
             using (var content = new ByteArrayContent(byteArray))
             {

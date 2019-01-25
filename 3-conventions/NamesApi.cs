@@ -4,6 +4,12 @@ namespace Api.People
 {
     public class NamesApi
     {
+        // GET api/people/names
+        public string[] Get() => people.All;
+        
+        
+        
+        
         #region ctor
         private readonly IPeopleRepository people;
 
@@ -13,6 +19,5 @@ namespace Api.People
         }
         #endregion
         
-        public string[] Get() => people.All;
     }
 }

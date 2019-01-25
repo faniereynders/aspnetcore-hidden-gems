@@ -12,6 +12,7 @@ namespace AwesomeConventions
         {
             var controllers = Assembly.GetExecutingAssembly().GetExportedTypes()
                                       .Where(t => t.Name.EndsWith("Api"));
+
             foreach (var controller in controllers)
             {
                 var controllerName = controller.Name.Replace("Api", "");
@@ -24,6 +25,7 @@ namespace AwesomeConventions
                         Template = $"{controller.Namespace.Replace(".", "/")}/{controllerName}"
                     }
                 });
+                
                 foreach (var action in controller.GetMethods().Where(p => p.IsPublic && p.Module.Name == controller.Module.Name))
                 {
                     var httpMethod = ResolveHttpMethod(action.Name);

@@ -288,3 +288,4 @@ __pycache__/
 *.xsd.cs
 
 1-awesome-server/process
+2-emotional-binder/appSettings.Development.json
