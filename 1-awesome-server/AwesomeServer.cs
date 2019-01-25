@@ -29,14 +29,15 @@ namespace AwesomeServer
                 Directory.CreateDirectory(outboxPath);
             }
 
-            Features.Set<IHttpRequestFeature>(new HttpRequestFeature());
-            Features.Set<IHttpResponseFeature>(new HttpResponseFeature());
-            Features.Set<IServiceProvidersFeature>(new ServiceProvidersFeature() { RequestServices = serviceProvider });
-
             var serverAddressesFeature = new ServerAddressesFeature();
             var inboxLocation = new DirectoryInfo(inboxPath).FullName;
             serverAddressesFeature.Addresses.Add(inboxLocation);
+
+            Features.Set<IHttpRequestFeature>(new HttpRequestFeature());
+            Features.Set<IHttpResponseFeature>(new HttpResponseFeature());
+            Features.Set<IServiceProvidersFeature>(new ServiceProvidersFeature() { RequestServices = serviceProvider });
             Features.Set<IServerAddressesFeature>(serverAddressesFeature);
+
             this.serviceProvider = serviceProvider;
         }
 
