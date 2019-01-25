@@ -18,9 +18,13 @@ namespace AwesomeServer
             Path = request[1];
             this.HttpContext = httpContext;
         }
+
+        public override string Scheme { get; set; } = "file";
+
+        #region other props
         public override HttpContext HttpContext { get; }
         public override string Method { get; set; }
-        public override string Scheme { get; set; } = "file";
+        
         public override bool IsHttps { get; set; }
         public override HostString Host { get; set; }
         public override PathString PathBase { get; set; }
@@ -37,6 +41,7 @@ namespace AwesomeServer
         public override bool HasFormContentType => throw new NotImplementedException();
         public override Task<IFormCollection> ReadFormAsync(CancellationToken cancellationToken = default(CancellationToken))
             => throw new NotImplementedException();
+        #endregion
 
     }
 

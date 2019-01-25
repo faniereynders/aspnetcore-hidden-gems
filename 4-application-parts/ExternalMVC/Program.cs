@@ -11,7 +11,7 @@ namespace ExternalMVC
                 .CreateDefaultBuilder(args)
                 .ConfigureServices(services =>
                 {
-                    services.AddExternalMvc("https://www.dropbox.com/s/ijk3g703oabh2se/Api.dll?dl=1");
+                    services.AddExternalMvc("https://www.dropbox.com/s/..../Api.dll?dl=1");
                 })
                 .Configure(app => app.UseMvc())
                 .Build()

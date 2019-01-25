@@ -29,9 +29,10 @@ namespace AwesomeServer
         public override HttpResponse Response { get; }
         public override IFeatureCollection Features { get; }
         public override IServiceProvider RequestServices { get; set; }
-        public override CancellationToken RequestAborted { get; set; }
+        
 
         #region N/A
+        public override CancellationToken RequestAborted { get; set; }
         public override ConnectionInfo Connection => throw new NotImplementedException();
         public override WebSocketManager WebSockets => throw new NotImplementedException();
         [Obsolete]public override AuthenticationManager Authentication => throw new NotImplementedException();

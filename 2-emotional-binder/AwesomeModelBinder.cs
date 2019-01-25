@@ -11,7 +11,7 @@ namespace AwesomeApi
     public class AwesomeModelBinder : IModelBinder
     {
         #region consts
-        private const string SUBSCRIPTION_KEY = "2939dbc417c04936b709ecb2bbea6729";
+        private const string SUBSCRIPTION_KEY = "YOUR KEY HERE";
         private const string SUBSCRIPTION_LOCATION = "westeurope";
         #endregion
 
