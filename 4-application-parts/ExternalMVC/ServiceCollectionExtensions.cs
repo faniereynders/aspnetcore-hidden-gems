@@ -12,7 +12,7 @@ namespace ExternalMVC
             var assembly = Assembly.Load(bytes);
 
             var builder = services
-                            .AddMvc()
+                            .AddMvc(o=>o.EnableEndpointRouting = false)
                             .AddApplicationPart(assembly);
 
             return builder;
