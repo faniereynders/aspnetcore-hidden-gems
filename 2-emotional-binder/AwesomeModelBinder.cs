@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AwesomeApi
@@ -25,11 +26,15 @@ namespace AwesomeApi
         {
             const string propertyName = "Photo";
             var valueProviderResult = bindingContext.ValueProvider.GetValue(propertyName);
-            var base64Value = valueProviderResult.FirstValue;
+
+
+            var b = Encoding.Default.GetBytes(valueProviderResult.FirstValue);
+
+            var base64Value = Convert.ToBase64String(Encoding.UTF8.GetBytes(valueProviderResult.FirstValue));
             if (!string.IsNullOrEmpty(base64Value))
             {
                 var bytes = Convert.FromBase64String(base64Value);
-                var emotionResult = await GetEmotionResultAsync(bytes, config["SubscriptionKey"]);
+                var emotionResult = await GetEmotionResultAsync(b, config["SubscriptionKey"]);
                 var scores = emotionResult.Select(i => i.FaceAttributes.Emotion).ToArray();
                 var result = new EmotionalPhotoDto
                 {

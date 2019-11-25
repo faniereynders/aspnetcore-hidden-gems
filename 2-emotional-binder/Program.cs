@@ -8,12 +8,7 @@ namespace AwesomeApi
     {
         public static void Main(string[] args)
         {
-    ////        var config = new ConfigurationBuilder()
-    ////// Call additional providers here as needed.
-    ////// Call AddCommandLine last to allow arguments to override other configuration.
-    ////.AddCommandLine(args)
-    ////.Build();
-            WebHost.CreateDefaultBuilder(args)
+             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build()
                 .Run();
