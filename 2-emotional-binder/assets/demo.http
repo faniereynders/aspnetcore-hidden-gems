@@ -1,10 +1,9 @@
 POST http://localhost:5002/api/example
-Content-Type: multipart/form-data; boundary=TrumpWall
+Content-Type: multipart/form-data; boundary=emotions
 
---TrumpWall
+--emotions
 Content-Disposition: form-data; name="Photo"
-Content-Type: image/png
 
-< ./emotions.jpeg
+< ./emotions.jpeg.base64
 
---TrumpWall--
+--emotions--
