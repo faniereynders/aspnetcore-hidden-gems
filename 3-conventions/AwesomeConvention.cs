@@ -11,11 +11,11 @@ namespace AwesomeConventions
         public void Apply(ApplicationModel application)
         {
             var controllers = Assembly.GetExecutingAssembly().GetExportedTypes()
-                                      .Where(t => t.Name.EndsWith("Api"));
+                                  .Where(t => t.Name.EndsWith("Api"));
 
             foreach (var controller in controllers)
             {
-                var controllerName = controller.Name.Replace("Api", "");
+                var controllerName = controller.Name.Replace("Api", string.Empty);
                 var model = new ControllerModel(controller.GetTypeInfo(), controller.GetCustomAttributes().ToArray());
                 model.ControllerName = controllerName;
                 model.Selectors.Add(new SelectorModel
@@ -25,23 +25,28 @@ namespace AwesomeConventions
                         Template = $"{controller.Namespace.Replace(".", "/")}/{controllerName}"
                     }
                 });
-                
-                foreach (var action in controller.GetMethods().Where(p => p.IsPublic && p.Module.Name == controller.Module.Name))
+
+                foreach (var action in controller.GetMethods()?.Where(p => p.IsPublic && p.Module.Name == controller.Module.Name))
                 {
                     var httpMethod = ResolveHttpMethod(action.Name);
                     var actionModel = new ActionModel(action, new object[] { httpMethod })
                     {
-                        ActionName = action.Name
+                        ActionName = action.Name,
+                        Controller = model
                     };
+
                     actionModel.Selectors.Add(new SelectorModel());
 
                     model.Actions.Add(actionModel);
                 }
                 application.Controllers.Add(model);
             }
+
+
         }
 
-        private HttpMethodAttribute ResolveHttpMethod(string name){
+        private HttpMethodAttribute ResolveHttpMethod(string name)
+        {
             switch (name.ToUpper())
             {
                 case "GET":
@@ -52,7 +57,7 @@ namespace AwesomeConventions
                     return new HttpGetAttribute();
                 case "DELETE":
                     return new HttpGetAttribute();
-                    
+
                 default:
                     return null;
             }
