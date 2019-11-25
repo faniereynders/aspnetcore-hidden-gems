@@ -11,14 +11,12 @@ namespace AwesomeServer
 {
     public class AwesomeServer : IServer
     {
-        private readonly string inboxPath;
-        private readonly string outboxPath;
-        private readonly IServiceProvider serviceProvider;
+        private readonly AwesomeFolderWatcher awesomeFolderWatcher;
 
-        public AwesomeServer(IOptions<AwesomeServerOptions> options, IServiceProvider serviceProvider)
+        public AwesomeServer(IOptions<AwesomeServerOptions> options, IServiceProvider serviceProvider, AwesomeFolderWatcher awesomeFolderWatcher)
         {
-            this.inboxPath = options.Value.InboxPath;
-            this.outboxPath = options.Value.OutboxPath;
+            var inboxPath = options.Value.InboxPath;
+            var outboxPath = options.Value.OutboxPath;
 
             if (!Directory.Exists(inboxPath))
             {
@@ -33,28 +31,19 @@ namespace AwesomeServer
             var inboxLocation = new DirectoryInfo(inboxPath).FullName;
             serverAddressesFeature.Addresses.Add(inboxLocation);
 
-            Features.Set<IHttpRequestFeature>(new HttpRequestFeature());
-            Features.Set<IHttpResponseFeature>(new HttpResponseFeature());
             Features.Set<IServiceProvidersFeature>(new ServiceProvidersFeature() { RequestServices = serviceProvider });
-            Features.Set<IServerAddressesFeature>(serverAddressesFeature);
+            Features.Set(serverAddressesFeature);
 
-            this.serviceProvider = serviceProvider;
+            this.awesomeFolderWatcher = awesomeFolderWatcher;
         }
 
-        public IFeatureCollection Features { get; } = new FeatureCollection();
-
-        public void Dispose() { }
-
+        public IFeatureCollection Features => new FeatureCollection();
+        
         public Task StartAsync<TContext>(IHttpApplication<TContext> application, CancellationToken cancellationToken)
-        {
-            return Task.Run(() =>
-            {
-                var watcher = new AwesomeFolderWatcher<TContext>(application, Features, inboxPath, outboxPath);
-                watcher.Watch();
-            });
-        }
+            => awesomeFolderWatcher.WatchAsync(application, Features);
 
         public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+        
+        public void Dispose() { }
     }
-
 }

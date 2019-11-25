@@ -15,6 +15,7 @@ namespace AwesomeServer
                 {
                     services.Configure(options);
                     services.AddSingleton<IServer, AwesomeServer>();
+                    services.AddSingleton<AwesomeFolderWatcher>();
                 });
             }
         }

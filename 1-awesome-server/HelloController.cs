@@ -5,7 +5,10 @@ namespace AwesomeServer
     [Route("api/[controller]")]
     public class HelloController
     {
-        public string Get() => "Hello World!";
+        public string Get() 
+        {
+            return "Hello World!";
+                }
 
         [HttpGet("json")]
         public object GetJson() => new { FirstName = "Fanie", LastName = "Reynders" };
