@@ -1,23 +1,12 @@
 ﻿using AwesomeConventions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.People
 {
     public class NamesApi
     {
         // GET api/people/names
-        public string[] Get() => people.All;
-        
-        
-        
-        
-        #region ctor
-        private readonly IPeopleRepository people;
-
-        public NamesApi(IPeopleRepository people)
-        {
-            this.people = people;
-        }
-        #endregion
+        public string[] Get([FromServices]IPeopleRepository people) => people.All;
         
     }
 }
