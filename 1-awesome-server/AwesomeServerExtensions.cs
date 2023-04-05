@@ -1,24 +1,18 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server;
-using System;
-using Microsoft.Extensions.DependencyInjection;
+namespace Microsoft.AspNetCore.Hosting;
 
-namespace AwesomeServer
+public static class ServerExtensions
 {
-    namespace Microsoft.AspNetCore.Hosting
+    public static IWebHostBuilder UseAwesomeServer(this IWebHostBuilder hostBuilder, Action<AwesomeServerOptions> options)
     {
-        public static class ServerExtensions
+        return hostBuilder.ConfigureServices(services =>
         {
-            public static IWebHostBuilder UseAwesomeServer(this IWebHostBuilder hostBuilder, Action<AwesomeServerOptions> options)
-            {
-                return hostBuilder.ConfigureServices(services =>
-                {
-                    services.Configure(options);
-                    services.AddSingleton<IServer, AwesomeServer>();
-                    services.AddSingleton<AwesomeFolderWatcher>();
-                });
-            }
-        }
+            services.Configure(options);
+            services.AddSingleton<IServer, AwesomeServer>();
+            services.AddSingleton<AwesomeFolderWatcher>();
+        });
     }
-
 }
+
+
