@@ -1,21 +1,33 @@
-﻿using AwesomeServer.Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿
 
-namespace AwesomeServer
+using AwesomeServer;
+using AwesomeServer.Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore;
+
+//var app = WebHost.CreateDefaultBuilder(args)
+//    .UseAwesomeServer(o =>
+//    {
+//        o.InboxPath = @".\process\inbox";
+//        o.OutboxPath = @".\process\outbox";
+//    })
+//    .UseStartup<Startup>()
+//    .Build();
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.UseAwesomeServer(o =>
 {
-    class Program
-    {
-        static void Main(string[] args) =>
-            WebHost
-                .CreateDefaultBuilder(args)
-                .UseAwesomeServer(o =>
-                {
-                    o.InboxPath = @".\process\inbox";
-                    o.OutboxPath = @".\process\outbox";
-                })
-                .UseStartup<Startup>()
-                .Build()
-                .Run();
-    }
-}
+    o.InboxPath = @".\process\inbox";
+    o.OutboxPath = @".\process\outbox";
+});
+
+var app = builder.Build();
+
+app.MapGet("/foo", () => "Hello FOO!");
+
+
+
+
+
+
+app.Run();

@@ -1,7 +1,4 @@
-﻿namespace AwesomeConventions
+﻿public class PeopleRepository : IPeopleRepository
 {
-    public class PeopleRepository : IPeopleRepository
-    {
-        public string[] All => new string[] { "Fanie", "John", "Joe" };
-    }
+    public string[] All => new string[] { "Fanie", "John", "Joe" };
 }

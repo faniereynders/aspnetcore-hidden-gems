@@ -6,28 +6,28 @@ using System.Threading.Tasks;
 
 namespace AwesomeApi
 {
-    public class EmotionalClient
+    public class FaceDetectionClient
     {
         private readonly HttpClient httpClient;
         private readonly JsonSerializerOptions jsonSerializerOptions;
 
-        public EmotionalClient(HttpClient httpClient, IConfiguration configuration, JsonSerializerOptions jsonSerializerOptions)
+        public FaceDetectionClient(HttpClient httpClient, IConfiguration configuration, JsonSerializerOptions jsonSerializerOptions)
         {
             httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", configuration["SubscriptionKey"]);
             this.httpClient = httpClient;
             this.jsonSerializerOptions = jsonSerializerOptions;
         }
-        public async Task<EmotionResultDto[]> GetEmotionResultAsync(byte[] byteArray)
+        public async Task<FaceDetectionResultDto[]> GetFacesAsync(byte[] byteArray)
         {
             
             
-            var uri = $"https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceAttributes=emotion";
+            var uri = $"https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect";
             using (var content = new ByteArrayContent(byteArray))
             {
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 var response = await httpClient.PostAsync(uri, content);
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var result = JsonSerializer.Deserialize<EmotionResultDto[]>(responseContent, jsonSerializerOptions);
+                var result = JsonSerializer.Deserialize<FaceDetectionResultDto[]>(responseContent, jsonSerializerOptions);
                 return result;
             }
         }

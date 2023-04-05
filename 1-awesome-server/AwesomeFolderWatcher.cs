@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 
@@ -36,7 +37,7 @@ namespace AwesomeServer
                 await application.ProcessRequestAsync(context);
 
                 WriteOutputToFile(features, e.Name);
-
+                File.Delete(e.FullPath);
             };
 
             Task.Run(() => watcher.WaitForChanged(WatcherChangeTypes.All));
@@ -50,15 +51,26 @@ namespace AwesomeServer
 
             var fname = BuildOutputFileName(fileName, response);
 
+
+
+
             using (var reader = new StreamReader(responseBody.Stream))
-            using (var fs = new FileStream(fname, FileMode.CreateNew))
             {
+                var sb = new StringBuilder();
+                sb.AppendLine($"HTTP: {response.StatusCode}");
+                response.Headers.ToList().ForEach(h =>
+                {
+                    sb.AppendLine($"{h.Key}: {h.Value}");
+                });
+                sb.AppendLine("---");
                 responseBody.Stream.Seek(0, SeekOrigin.Begin);
-                responseBody.Stream.CopyTo(fs);
-                responseBody.Stream.Flush();
-                responseBody.Stream.Dispose();
-                fs.Close();
+                sb.AppendLine(reader.ReadToEnd());
+
+
+                File.WriteAllText(fname, sb.ToString());
+                
             }
+           
         }
 
         private string BuildOutputFileName(string fileName, IHttpResponseFeature httpResponseFeature)

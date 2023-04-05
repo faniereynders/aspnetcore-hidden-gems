@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -8,6 +10,7 @@ namespace AwesomeConventions
 {
     public class AwesomeConvention : IApplicationModelConvention
     {
+
         public void Apply(ApplicationModel application)
         {
             var controllers = Assembly.GetExecutingAssembly().GetExportedTypes()
@@ -29,6 +32,7 @@ namespace AwesomeConventions
                 foreach (var action in controller.GetMethods()?.Where(p => p.IsPublic && p.Module.Name == controller.Module.Name))
                 {
                     var httpMethod = ResolveHttpMethod(action.Name);
+
                     var actionModel = new ActionModel(action, new object[] { httpMethod })
                     {
                         ActionName = action.Name,

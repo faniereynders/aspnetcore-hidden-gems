@@ -1,12 +1,7 @@
-﻿using AwesomeConventions;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Api.People
+﻿namespace Api.People;
+public class NamesApi
 {
-    public class NamesApi
-    {
-        // GET api/people/names
-        public string[] Get([FromServices]IPeopleRepository people) => people.All;
-        
-    }
+    private readonly IPeopleRepository people;
+    public NamesApi(IPeopleRepository people) => this.people = people;
+    public string[] Get() => people.All;
 }

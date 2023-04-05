@@ -11,9 +11,9 @@ namespace AwesomeApi
 {
     public class AwesomeModelBinder : IModelBinder
     {
-        private readonly EmotionalClient client;
+        private readonly FaceDetectionClient client;
 
-        public AwesomeModelBinder(EmotionalClient client) => this.client = client;
+        public AwesomeModelBinder(FaceDetectionClient client) => this.client = client;
 
         public async Task BindModelAsync(ModelBindingContext bindingContext)
         {
@@ -24,12 +24,12 @@ namespace AwesomeApi
             if (!string.IsNullOrEmpty(base64Value))
             {
                 var bytes = Convert.FromBase64String(base64Value);
-                var emotionResult = await client.GetEmotionResultAsync(bytes);
-                var scores = emotionResult.Select(i => i.FaceAttributes.Emotion).ToArray();
-                var result = new EmotionalPhotoDto
+                var response = await client.GetFacesAsync(bytes);
+                var faces = response.Select(i => i.FaceRectangle).ToArray();
+                var result = new FaceDetectionDto
                 {
                     Contents = bytes,
-                    Scores = scores
+                    Faces = faces
                 };
                 bindingContext.Result = ModelBindingResult.Success(result);
             }

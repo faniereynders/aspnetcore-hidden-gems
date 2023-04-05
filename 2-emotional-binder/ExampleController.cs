@@ -2,13 +2,13 @@
 
 namespace AwesomeApi
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/mvc")]
     public class ExampleController : Controller
     {
-        public ActionResult Post(EmotionalPhotoDto item)
+        public ActionResult Post(FaceDetectionDto item)
         {
             
-            return Ok(item.Scores);
+            return Ok(item.Faces);
         }
     }
 }

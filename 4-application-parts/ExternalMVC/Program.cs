@@ -1,20 +1,16 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
+﻿using System.Reflection;
 
-namespace ExternalMVC
-{
-    public class Program
-    {
-        public static void Main(string[] args) =>
-            WebHost
-                .CreateDefaultBuilder(args)
-                .ConfigureServices(services =>
-                {
-                    services.AddExternalMvc(args[0]);
-                })
-                .Configure(app => app.UseMvc())
-                .Build()
-                .Run();
-    }
-}
+var builder = WebApplication.CreateBuilder(args);
+
+var url = builder.Configuration.GetValue<string>("ApiAssemblyDownloadUrl");
+var bytes = await new HttpClient().GetByteArrayAsync(url);
+var assembly = Assembly.Load(bytes);
+
+builder.Services.AddMvc(o => o.EnableEndpointRouting = false)
+    .AddApplicationPart(assembly);
+
+var app = builder.Build();
+
+app.UseMvc();
+app.Run();    
+

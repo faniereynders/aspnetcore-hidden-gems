@@ -1,7 +1,4 @@
-﻿namespace AwesomeConventions
+﻿public interface IPeopleRepository
 {
-    public interface IPeopleRepository
-    {
-        string[] All { get; }
-    }
+    string[] All { get; }
 }

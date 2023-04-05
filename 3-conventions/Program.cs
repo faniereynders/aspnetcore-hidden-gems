@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+﻿using AwesomeConventions;
 
-namespace AwesomeConventions
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+var builder = WebApplication.CreateBuilder(args);
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
-    }
-}
+builder.Services
+    .AddSingleton<IPeopleRepository, PeopleRepository>()
+    .AddControllers(o => o.Conventions.Add(new AwesomeConvention()));
+
+var app = builder.Build();
+
+app.MapControllers();
+
+app.Run();
