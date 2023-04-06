@@ -16,9 +16,7 @@ namespace AwesomeApi
         {
             var client = httpContext.RequestServices.GetService<FaceDetectionClient>();
             const string propertyName = "Photo";
-            var valueProviderResult = httpContext.Request.Form[propertyName].FirstOrDefault();//. bindingContext.ValueProvider.GetValue(propertyName);
-
-            //var base64Value = valueProviderResult.FirstValue;
+            var valueProviderResult = httpContext.Request.Form[propertyName].FirstOrDefault();
             if (!string.IsNullOrEmpty(valueProviderResult))
             {
                 var bytes = Convert.FromBase64String(valueProviderResult);
@@ -29,7 +27,6 @@ namespace AwesomeApi
                     Contents = bytes,
                     Faces = faces
                 };
-                // bindingContext.Result = ModelBindingResult.Success(result);
                 return result;
             }
 

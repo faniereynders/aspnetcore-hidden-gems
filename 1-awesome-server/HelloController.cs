@@ -5,10 +5,10 @@ public class HelloController
 {
     public string Get() =>  "Hello World!";
 
-    [HttpGet("json")]
+    [HttpPut("json")]
     public object GetJson() => new { FirstName = "Fanie", LastName = "Reynders" };
 
-    [HttpGet("image")]
+    [HttpPost("image")]
     public IActionResult GetImage()
     {
         var image = System.IO.File.OpenRead("obama.png");

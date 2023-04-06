@@ -1,9 +1,9 @@
 POST http://localhost:5002/api/example
-Content-Type: multipart/form-data; boundary=emotions
+Content-Type: multipart/form-data; boundary=faces
 
---emotions
+--faces
 Content-Disposition: form-data; name="Photo"
 
 < ./emotions.jpeg.base64
 
---emotions--
+--faces--

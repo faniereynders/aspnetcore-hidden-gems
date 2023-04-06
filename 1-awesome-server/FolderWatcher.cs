@@ -3,20 +3,20 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
 using System.Text;
 
-public class AwesomeFolderWatcher
+public class FolderWatcher
 {
     private readonly FileSystemWatcher watcher;
-    private readonly IOptions<AwesomeServerOptions> options;
+    private readonly IOptions<TorenvalkOptions> options;
     private readonly ILogger logger;
 
-    public AwesomeFolderWatcher(IOptions<AwesomeServerOptions> options, ILoggerFactory logger)
+    public FolderWatcher(IOptions<TorenvalkOptions> options, ILoggerFactory logger)
     {
         this.watcher = new FileSystemWatcher(options.Value.InboxPath)
         {
             EnableRaisingEvents = true
         };
         this.options = options;
-        this.logger = logger.CreateLogger(nameof(AwesomeServer));
+        this.logger = logger.CreateLogger(nameof(TorenvalkServer));
     }
     public Task WatchAsync<TContext>(IHttpApplication<TContext> application, IFeatureCollection features)
     {
@@ -90,12 +90,23 @@ public class AwesomeFolderWatcher
     }
     private static IHttpRequestFeature CreateHttpRequestFromFile(string filename)
     {
-        var fileRequest = File.ReadAllText(filename).Split(' ');
+        var fileRequest = File.ReadAllText(filename).Split("->");
 
         return new HttpRequestFeature()
         {
-            Method = fileRequest[0],
-            Path = fileRequest[1]
+            Method = mapHttpMethod(fileRequest[0]),
+            Path = "/" + fileRequest[1].Replace(":","/")
         };
     }
+
+    private static string mapHttpMethod(string method) => 
+        method.ToUpper() switch
+        {
+            "KRIJGEN" => "GET",
+            "ZETTEN" => "PUT",
+            "VERZENDEN" => "POST",
+            "VERWIJDEREN" => "DELETE",
+            
+            _ => null
+        };
 }

@@ -4,13 +4,13 @@ namespace Microsoft.AspNetCore.Hosting;
 
 public static class ServerExtensions
 {
-    public static IWebHostBuilder UseAwesomeServer(this IWebHostBuilder hostBuilder, Action<AwesomeServerOptions> options)
+    public static IWebHostBuilder UseTorenvalk(this IWebHostBuilder hostBuilder, Action<TorenvalkOptions> options)
     {
         return hostBuilder.ConfigureServices(services =>
         {
             services.Configure(options);
-            services.AddSingleton<IServer, AwesomeServer>();
-            services.AddSingleton<AwesomeFolderWatcher>();
+            services.AddSingleton<IServer, TorenvalkServer>();
+            services.AddSingleton<FolderWatcher>();
         });
     }
 }

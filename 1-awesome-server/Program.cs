@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore;
-
-var builder = WebHost.CreateDefaultBuilder<Startup>(args);
-
-builder.UseAwesomeServer(o =>
-{
-    o.InboxPath = @".\process\inbox";
-    o.OutboxPath = @".\process\outbox";
-});
-
-
-builder.Build().Run();
+﻿Host
+    .CreateDefaultBuilder()
+    .ConfigureWebHost(webHost =>
+        webHost
+            .ConfigureServices(services => services.AddMvc(o => o.EnableEndpointRouting = false))
+            .Configure(app => app.UseMvc())
+            .UseTorenvalk(o =>
+            {
+                o.InboxPath = @".\process\inbox";
+                o.OutboxPath = @".\process\outbox";
+            }))
+    .Build()
+    .Run();

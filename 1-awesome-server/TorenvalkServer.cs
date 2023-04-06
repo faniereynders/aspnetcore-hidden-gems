@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Options;
 
-public class AwesomeServer : IServer
+public class TorenvalkServer : IServer
 {
-    private readonly AwesomeFolderWatcher awesomeFolderWatcher;
+    private readonly FolderWatcher awesomeFolderWatcher;
 
-    public AwesomeServer(IOptions<AwesomeServerOptions> options, IServiceProvider serviceProvider, AwesomeFolderWatcher awesomeFolderWatcher)
+    public TorenvalkServer(IOptions<TorenvalkOptions> options, IServiceProvider serviceProvider, FolderWatcher awesomeFolderWatcher)
     {
         var inboxPath = options.Value.InboxPath;
         var outboxPath = options.Value.OutboxPath;
